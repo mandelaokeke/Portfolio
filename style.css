@@ -175,3 +175,75 @@ background:linear-gradient(90deg,var(--brand),var(--brand-2)); }
 
  
   .toggle{ border:none; background:transparent; color:var(--muted); cursor:pointer; font-weight:700 }
+
+  /* =========================
+   Mobile optimizations
+   ========================= */
+@media (max-width: 700px){
+    /* Layout & spacing */
+    .container{ width:min(100%, 92%); }
+    section{ padding: 1.6rem 0; }
+    /* Anchor links don’t hide under sticky nav */
+    section, header, .hero { scroll-margin-top: 72px; }
+  
+    /* Hero stacks vertically */
+    .hero{ grid-template-columns: 1fr; gap:1.2rem; padding: 2.2rem 0 1rem; }
+    .hero .portrait{ order:-1; margin-bottom:.4rem; }
+    .hero h1{ font-size: clamp(1.35rem, 6vw, 1.8rem); line-height:1.2; }
+    .hero p{ font-size:.98rem; }
+  
+    /* Buttons: full-width, comfy touch targets */
+    .hero-actions{ flex-direction: column; align-items: stretch; gap:.6rem; }
+    .hero-actions .btn{ width:100%; padding:.9rem 1rem; }
+  
+    /* Tags: horizontal scroll (no tall wrapping) */
+    .hero .tags{ overflow-x:auto; -webkit-overflow-scrolling: touch; gap:.4rem; padding-bottom:.3rem; }
+    .hero .tags::-webkit-scrollbar{ display:none; }
+    .tag{ white-space: nowrap; font-size:.78rem; }
+  
+    /* Section headers */
+    .section-head{ flex-direction: column; align-items:flex-start; gap:.3rem; }
+    .section-head h2{ font-size:1.05rem; }
+  
+    /* Cards: trim padding & text sizes */
+    .card{ padding:.9rem; }
+    .card h3{ font-size:1rem; }
+    .card .chip{ font-size:.72rem; padding:.2rem .45rem; }
+  
+    /* Projects slider: one visible card with bigger side peeks */
+    :root{ --peek: clamp(10vw, 14vw, 18vw); }         /* larger peeks on phones */
+    #projects .slider-viewport{ max-width:100%; margin-inline:0; }
+    #projects .slide{
+      flex-basis: calc(100% - 2 * var(--peek));       /* one card per view */
+      min-height: clamp(180px, 26vh, 220px);
+      padding:.8rem;
+    }
+    .arrow{ width:44px; height:44px; }                /* bigger tap targets */
+  
+    /* Nav can wrap if needed */
+    .nav-links{ flex-wrap: wrap; gap:.8rem; font-size:.95rem; }
+
+    .menu-toggle{ display:inline-flex !important; }
+  }
+  
+  /* Ultra-small phones */
+  @media (max-width: 380px){
+    .hero h1{ font-size: clamp(1.2rem, 7vw, 1.5rem); }
+    .hero-actions .btn{ padding:.8rem .9rem; }
+    .tag{ font-size:.74rem; }
+  }
+  @media (min-width: 701px){
+    .menu-toggle{ display:none !important; }
+  
+    .nav-links{
+      display:flex !important;
+      position:static !important;
+      background:transparent !important;
+      box-shadow:none !important;
+      padding:0 !important;
+      flex-direction:row !important;
+      gap:1.1rem;
+      font-size:1rem;
+      border-bottom:0;
+    }
+  }
