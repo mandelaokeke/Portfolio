@@ -85,3 +85,46 @@ window.addEventListener('resize', onResize);
 // init
 go(0);
 })();
+// --- Safety: make sure the mobile menu toggles on phones ---
+(function () {
+    const btn = document.getElementById('menuToggle');
+    const nav = document.getElementById('primaryNav');
+    if (!btn || !nav) return;
+  
+    // Avoid double-binding if your earlier code already ran
+    if (btn.__menuBound) return;
+  
+    function closeMenu() {
+      nav.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Open menu');
+    }
+    function openMenu() {
+      nav.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+      btn.setAttribute('aria-label', 'Close menu');
+    }
+  
+    // Click (desktop + many mobiles)
+    btn.addEventListener('click', () => {
+      nav.classList.contains('open') ? closeMenu() : openMenu();
+    }, { passive: true });
+  
+    // Touchstart (fixes the “non-responsive on iOS” edge case)
+    btn.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // stop double-trigger
+      nav.classList.contains('open') ? closeMenu() : openMenu();
+    }, { passive: false });
+  
+    // Close when a nav link is tapped
+    nav.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', closeMenu, { passive: true })
+    );
+  
+    // Close on Escape and when resizing to desktop
+    window.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); }, { passive: true });
+    const mq = window.matchMedia('(min-width: 701px)');
+    (mq.addEventListener ? mq.addEventListener : mq.addListener).call(mq, 'change', e => { if (e.matches) closeMenu(); });
+  
+    btn.__menuBound = true;
+  })();

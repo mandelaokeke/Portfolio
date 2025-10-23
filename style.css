@@ -10,12 +10,23 @@
   img{ max-width:100%; display:block }
   .container{ width:min(1100px, 92%); margin-inline:auto }
   .nav{ position:sticky; top:0; z-index:99; backdrop-filter:saturate(180%) blur(8px); background:color-mix(in oklab, var(--bg) 85%, transparent); border-bottom:1px solid var(--line) }
-  .nav-inner{ display:flex; align-items:center; justify-content:space-between; padding:.9rem 0 }
+  .nav-inner{ display:flex; align-items:center; justify-content:space-between; padding:.9rem 0; position:relative }
   .brand{ display:flex; align-items:center; gap:.7rem; font-weight:800; letter-spacing:.4px }
   .brand .dot{ width:10px; height:10px; border-radius:999px; background:linear-gradient(135deg,var(--brand),var(--brand-2)); box-shadow:0 0 0 4px color-mix(in oklab, var(--brand) 25%, transparent) }
   .nav a{ opacity:.9 }
   .nav a:hover{ opacity:1 }
   .nav-links{ display:flex; gap:1.1rem; font-weight:600 }
+  /* Hamburger button (hidden on desktop by default; shown via mobile media query) */
+  .menu-toggle{
+    display:none;
+    align-items:center; justify-content:center;
+    width:40px; height:40px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:linear-gradient(180deg, color-mix(in oklab, var(--panel) 88%, transparent), var(--panel));
+    color:var(--text); font-size:1.1rem; cursor:pointer;
+    box-shadow:var(--shadow);
+  }
   .btn{
 display:inline-flex; align-items:center; gap:.55rem;
 padding:.7rem 1rem; border-radius:999px;
@@ -220,9 +231,19 @@ background:linear-gradient(90deg,var(--brand),var(--brand-2)); }
     }
     .arrow{ width:44px; height:44px; }                /* bigger tap targets */
   
-    /* Nav can wrap if needed */
-    .nav-links{ flex-wrap: wrap; gap:.8rem; font-size:.95rem; }
-
+    /* Mobile nav: hidden by default; opens under the header */
+    .nav-links{
+      display:none;
+      position:absolute; left:0; right:0; top:100%;
+      background:var(--panel);
+      border-bottom:1px solid var(--line);
+      padding:.8rem 4%;
+      flex-direction:column; gap:.6rem; font-size:1rem;
+      box-shadow:0 12px 24px rgba(2,6,23,.45);
+      z-index:100;
+    }
+    .nav-links.open{ display:flex; }
+    .nav-links a, .nav-links .toggle{ padding:.5rem .2rem; }
     .menu-toggle{ display:inline-flex !important; }
   }
   
@@ -245,5 +266,12 @@ background:linear-gradient(90deg,var(--brand),var(--brand-2)); }
       gap:1.1rem;
       font-size:1rem;
       border-bottom:0;
+    }
+  }
+  
+@media (max-width: 700px){
+    .menu-toggle{
+      z-index: 110;           /* above the dropdown */
+      touch-action: manipulation;  /* faster taps on iOS/Safari */
     }
   }
